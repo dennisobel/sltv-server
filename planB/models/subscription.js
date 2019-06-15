@@ -32,7 +32,7 @@ const subscriptionSchema = new Schema({
     },
     mpesaTransactionCode:{
         type:String,
-        unique:true
+        // unique:true
     }  
 })
 
