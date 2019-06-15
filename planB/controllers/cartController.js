@@ -1,6 +1,14 @@
 const db = require("./../models");
-// let soket = require('../sockets/socket');
+let helper = require('./../../Helpers')
 let soket = require('../../index')
+
+// SMS PARAMETRES
+const smsuser = 'KBSACCO'
+const smspassword = 'KBSACCO1';   
+const smsclientsmsid = 'YOURREFERENCENUMBER';
+const smssenderid='KBSACCO';
+const unicode=0;
+// EOF SMS PARAMS
 
 const GetCart = {}
 const GetCartById = {}
@@ -102,14 +110,56 @@ Ready.post = (req,res) => {
 		ready:true
 	})
 	.then(()=>{
-		return res.status(200).json({
-			success:true
+		db.CartSchema.findOne({
+			phonenumber:req.body.phonenumber
+		},(err,doc)=>{
+			if(doc){
+				res.status(200).json({
+					success:true,
+					doc
+				})
+
+				console.log('READY:',doc)
+
+				let sms = `Hi, your order is ready`; 
+				let URL = `http://messaging.openocean.co.ke/sendsms.jsp?user=${smsuser}&password=${smspassword}&mobiles=${doc.phonenumber}&sms=${sms}&clientsmsid=${smsclientsmsid}&senderid=${smssenderid}`
+				
+				helper.sendMessage(URL)   				
+			}else if(!doc){
+				res.status(200).json({
+					success: false
+				})
+			}else if(err){
+				throw new Error
+			}
 		})
+
 	})
 	.catch(function(err){
 		res.status(500).json({
 			message:err
 		})
+	})
+}
+
+Ready.get = (req,res) => {
+	db.CartSchema.find({
+		ready:true
+	},(err,doc)=>{
+		if(doc){
+			res.status(200).json({
+				success:true,
+				doc
+			})
+
+			// SMS ALERT
+		}else if(!doc){
+			res.status(200).json({
+				success:false
+			})
+		}else if(err){
+			throw new Error
+		}
 	})
 }
 

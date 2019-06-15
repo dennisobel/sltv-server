@@ -3,8 +3,16 @@ let bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken'); 
 const otpSecret = require("./../configuration/otp");
 const otplib = require('otplib');
+let helper = require('./../../Helpers')
 
 // create helper to send OTP //
+// SMS PARAMETRES
+const smsuser = 'KBSACCO'
+const smspassword = 'KBSACCO1';   
+const smsclientsmsid = 'YOURREFERENCENUMBER';
+const smssenderid='KBSACCO';
+const unicode=0;
+// EOF SMS PARAMS
 
 // Pass Hash
 var authConfig = require('../configuration/auth');
@@ -31,6 +39,7 @@ const R_Login = {}
 const R_OTP = {}
 const R_SingleUser = {}
 const R_AllUsers = {}
+const R_HomeDelivery = {}
 
 /**HANDLE SIGNUP */
 
@@ -76,12 +85,12 @@ R_Signup.post = (req,res) => {
                 },()=>console.log("newUser: ",newUser))
                 .save()
                 .then((newUser)=>{
-                    /*
-                    let sms = `Hi, thank you for joining Goose Links, your One Time Password is ${OTP}`; 
+                    
+                    let sms = `Hi, thank you for joining GenieInMyPocket, your One Time Password is ${OTP}`; 
                     let URL = `http://messaging.openocean.co.ke/sendsms.jsp?user=${smsuser}&password=${smspassword}&mobiles=${req.body.data.phoneNumber}&sms=${sms}&clientsmsid=${smsclientsmsid}&senderid=${smssenderid}`
                     
                     helper.sendMessage(URL)      
-                    */                     
+                                  
                     res.status(200).json({
                         success:true,
                         doc:newUser,
@@ -184,11 +193,22 @@ R_AllUsers.get = (req,res) => {
     db.RetailerSchema.find({
         
     },(err,doc) => {
-        console.log("DOC:",doc)
         if(doc){
+            let homeDel = doc.filter(el => {
+                return el.homeDelivery == true
+            })
+
+            let orderNPick = doc.filter(el => {
+                return el.homeDelivery == false
+            })
+
+            let filteredUsers = {
+                homeDel,orderNPick
+            }
+
             res.status(200).json({
                 success: true,
-                user:doc
+                users: filteredUsers
             })
         }else if(!doc){
             res.status(200).json({
@@ -198,6 +218,30 @@ R_AllUsers.get = (req,res) => {
     })     
 }
 
+R_HomeDelivery.post = (req,res) => {
+    console.log('HOME DEL INCOMONG DATA:',req.body)
+    db.RetailerSchema.findByIdAndUpdate({
+        _id:req.body.id
+    },{
+        homeDelivery:req.body.status
+    }).then(()=>{
+        db.RetailerSchema.findById({
+            id:req.body.id
+        },(err,doc) => {
+            if(doc){
+                res.status(200).json({
+                    success: true,
+                    user:doc
+                })
+            }else if(!doc){
+                res.status(200).json({
+                    success: false
+                })
+            }
+        })
+    })
+}
+
 
 
 module.exports = {
@@ -205,5 +249,6 @@ module.exports = {
     R_OTP,
     R_Login,
     R_SingleUser,
-    R_AllUsers
+    R_AllUsers,
+    R_HomeDelivery
 }

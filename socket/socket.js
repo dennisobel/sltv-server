@@ -24,26 +24,8 @@ module.exports = function(io, clients, isequal){
 		
 		//add cart
 		socket.on("orderNotification",(data)=>{				
-			console.log("receiving cart")
-			cart = data
-			io.emit("live",clients)
-			console.log("CART:",cart)
-			/*
-			for(key in clients){	
-				this.isequal = cart.socket == clients[key].socket
-				console.log(this.isequal)
-			}
-			
-			//emit order to seller
-			if(isequal == true){	
-				console.log("about to emit data to companion...")
-				io.sockets.connected[cart.socket].emit("new_order",cart,()=>{
-					console.log("emitting data to companion")
-				})
-			}else{
-				console.log("do na'en")
-			}	
-			*/		
+			console.log("RECEIVING CART:",data)
+			io.emit('notifyRetailer',data);	
 		});
 
 		//add user obj to client

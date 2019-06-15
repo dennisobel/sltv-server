@@ -3,6 +3,7 @@ const {R_OTP} = require('../controllers/retailerController');
 const {R_Login} = require('../controllers/retailerController');
 const {R_SingleUser} = require('../controllers/retailerController');
 const {R_AllUsers} = require('../controllers/retailerController');
+const {R_HomeDelivery} = require('../controllers/retailerController');
 
 const {Signup} = require('../controllers/authController');
 const {OTP} = require('../controllers/authController');
@@ -31,6 +32,7 @@ let appRouter = (app)=>{
     app.post('/r_signup',R_Signup.post)
     app.post('/r_otp',R_OTP.post)
     app.post('/r_login',R_Login.post)
+    app.post('/homedelivery', R_HomeDelivery.post)
     app.post('/subscribe',Subscribe.post);
 
     app.post('/createcart',CreateCart.post);
@@ -45,6 +47,8 @@ let appRouter = (app)=>{
     app.get('/getcartbyid/:id',GetCartById.get)
     app.get('/getsinglecart/:phonenumber',GetCartById.get)
     app.get('/deliveredtrue',Delivered.get)
+    app.get('/getready',Ready.get);
+
 
     app.delete('/delete/:id', DeleteCartById.delete)
 }

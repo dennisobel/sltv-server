@@ -35,7 +35,7 @@ app.use(function(req,res,next){
     console.log(req.headers.origin)
     return next();
     
-    return next();
+    // return next();
 })
 
 app.use(bodyParser.json());

@@ -36,7 +36,12 @@ const RetailerSchema = new Schema({
         type:Boolean,
         required: false,
         default:false
-    }    
+    },
+    homeDelivery:{
+        type:Boolean,
+        required:false,
+        default:false
+    } 
 })
 
 module.exports = mongoose.model("Retailer", RetailerSchema);

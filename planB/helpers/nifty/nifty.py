@@ -2,7 +2,6 @@ import logging
 from niftyclient import NiftyClient
 import sys, json
 
-
 # client initialisation
 class Config: 
     key_id = "f3900274b7784506e427523d7026f76c"
@@ -25,7 +24,6 @@ def mk_logger(level=logging.INFO):
     logging.basicConfig(format=log_format, level=level)
     logger = logging.getLogger('wallet_example')
     return logger
-
 
 # get all wallets
 def enumerate_wallets(client, logger):
@@ -64,10 +62,8 @@ def enumerate_online_checkout_transactions(client, logger, **kwargs):
             ).format(trx=transaction))
     logger.info("")
 
-
 if __name__ == '__main__':    
-    lines = read_in()
-    
+    lines = read_in()    
     logger = mk_logger()
     client = NiftyClient(Config(), logger)
     # print("wassup")
@@ -76,12 +72,9 @@ if __name__ == '__main__':
     # print(client.wallet.create_wallet())
     logger.info("")
     enumerate_wallets(client, logger)
-
     # initiate online checkout
-
     # Online Checkout
-    # Iniate an online checkout
-    
+    # Iniate an online checkout    
 
     result = client.online_checkout.initiate_checkout(
         phone_number=lines[0], 
@@ -93,13 +86,12 @@ if __name__ == '__main__':
     if result and result.transactions:
         print (
             "#{trx.payment_id}> Requested #{trx.transaction_amount}"
-            " from #{trx.phone_number}".format(trx=result.transactions[0]))
-    
+            " from #{trx.phone_number}".format(trx=result.transactions[0]))    
  
     # result = client.online_checkout.initiate_checkout(
     #     phone_number='254721224756', transaction_amount=10, service_reference_id="python-test")  
 
-    enumerate_online_checkout_transactions(client, logger, limit=1, offset=2)                  
+    enumerate_online_checkout_transactions(client, logger, limit=1, offset=2)                 
     
 
     
