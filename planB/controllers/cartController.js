@@ -37,7 +37,7 @@ GetCart.get = (req,res) => {
 GetCartById.get = (req,res,next) => {
 	console.log("incoming req:",req.params)
 	db.CartSchema
-	.find({retailer:req.params.id})
+	.findOne({retailer:req.params.id})
 	.then((carts)=>{
 		return res.status(200).json({
 			success:true,
