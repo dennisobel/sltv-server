@@ -33,7 +33,7 @@ let appRouter = (app)=>{
     app.post('/r_otp',R_OTP.post)
     app.post('/r_login',R_Login.post)
     app.post('/homedelivery', R_HomeDelivery.post)
-    app.post('/subscribe',Subscribe.post);
+    // app.post('/subscribe',Subscribe.post);
 
     app.post('/createcart',CreateCart.post);
     app.post('/delivered',Delivered.post);
