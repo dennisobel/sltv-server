@@ -3,6 +3,7 @@ let mpesa = require('../helpers/mpesa/ApiHelpers')
 const nifty = require("../helpers/nifty/");
 const db = require("./../models");
 const Subscribe = {}
+const GetSubscribe = {}
 
 
 const consumer_key = "RwV9nAayEJB4KOqz6Jhwpb3KchTp1QYm"; 
@@ -80,7 +81,7 @@ Subscribe.post = (req,res) => {
     saveSubscription({req:req.body,res:res})
 }
 
-Subscribe.get = (req,res) => {
+GetSubscribe.get = (req,res) => {
     console.log("INCOMING SUBSCRIPTION REQ:",req.params)    
 
     db.SubscriptionSchema.findOne({
@@ -101,7 +102,8 @@ Subscribe.get = (req,res) => {
 }
 
 module.exports = {
-    Subscribe
+    Subscribe,
+    GetSubscribe
 }
 
     /*

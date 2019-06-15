@@ -12,6 +12,7 @@ const {SingleUser} = require('../controllers/authController');
 
 
 const {Subscribe} = require('../controllers/subController');
+const {GetSubscribe} = require('../controllers/subController');
 const {CreateCart} = require('../controllers/cartController');
 const {GetCart} = require('../controllers/cartController');
 const {GetCartById} = require('../controllers/cartController');
@@ -39,7 +40,7 @@ let appRouter = (app)=>{
     app.post('/delivered',Delivered.post);
     app.post('/ready',Ready.post);
 
-    app.get('/checksubscription/:userName',Subscribe.get)
+    app.get('/checksubscription/:userName',GetSubscribe.get)
     app.get('/getuser/:userName',SingleUser.get)
     app.get('/r_getuser/:userName',R_SingleUser.get)
     app.get('/r_getusers',R_AllUsers.get)
